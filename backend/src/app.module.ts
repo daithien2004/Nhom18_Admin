@@ -1,0 +1,102 @@
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import mongoose from 'mongoose';
+
+// Cấu hình toàn cục cho Mongoose để chuẩn hóa id
+mongoose.set('toJSON', {
+  virtuals: true,
+  transform: (doc, ret: any) => {
+    // Chỉ thêm id nếu chưa tồn tại
+    if (!ret.id && ret._id) {
+      ret.id = ret._id.toString();
+      delete ret._id;
+    }
+    delete ret.__v; // Xóa trường __v
+    return ret;
+  },
+});
+
+mongoose.set('toObject', {
+  virtuals: true,
+  transform: (doc, ret: any) => {
+    // Chỉ thêm id nếu chưa tồn tại
+    if (!ret.id && ret._id) {
+      ret.id = ret._id.toString();
+      delete ret._id;
+    }
+    delete ret.__v; // Xóa trường __v
+    return ret;
+  },
+});
+
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from '@/src/common/guards/jwt-auth.guard';
+import { OtpModule } from './modules/otp/otp.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>(
+          'MONGO_URI',
+          'mongodb://localhost:27017/zaloute',
+        ),
+      }),
+    }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: configService.get<string>('EMAIL_USER'),
+            pass: configService.get<string>('EMAIL_PASS'),
+          },
+        },
+        defaults: {
+          from: `"No Reply" <${configService.get<string>('EMAIL_USER')}>`,
+        },
+      }),
+    }),
+    RedisModule.forRoot({
+      type: 'single',
+      url: 'redis://localhost:6379', // Hoặc từ env variable
+    }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'global', // đặt tên tuỳ ý
+        ttl: 60, // 60 giây
+        limit: 10, // 10 request trong 60s
+      },
+    ]),
+    UsersModule,
+    AuthModule,
+    OtpModule,
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
+})
+export class AppModule {}
