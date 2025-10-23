@@ -10,7 +10,6 @@ import { loginSchema, LoginFormValues } from '@/src/features/auth/types/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { status } = useSession();
 
   // State để quản lý trạng thái loading và lỗi từ server
@@ -57,13 +56,6 @@ export default function LoginPage() {
     } finally {
       setIsCredentialsLoading(false);
     }
-  };
-
-  // Xử lý đăng nhập bằng Google
-  const handleGoogleSignin = () => {
-    setIsGoogleLoading(true);
-    // Để NextAuth tự xử lý redirect cho Google
-    signIn('google', { callbackUrl: '/dashboard' });
   };
 
   // Cờ chung để vô hiệu hóa các nút

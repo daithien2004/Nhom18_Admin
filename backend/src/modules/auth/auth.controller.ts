@@ -65,31 +65,23 @@ export class AuthController {
   @Public()
   @Post('verify-otp')
   async verifyOtp(@Body() body: { email: string; otp: string }) {
-    try {
-      const result = await this.authService.verifyOtpAndActivate(
-        body.email,
-        body.otp,
-      );
-      return { message: result };
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    const result = await this.authService.verifyOtpAndActivate(
+      body.email,
+      body.otp,
+    );
+    return { message: result };
   }
 
   @Public()
   @Post('resend-otp')
   async resendOtp(@Body('email') email: string) {
-    try {
-      const result = await this.authService.resendOtp(email);
-      return {
-        message: 'OTP resent successfully',
-        data: {
-          remainingTime: result.remainingTime,
-        },
-      };
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    const result = await this.authService.resendOtp(email);
+    return {
+      message: 'OTP resent successfully',
+      data: {
+        remainingTime: result.remainingTime,
+      },
+    };
   }
 
   @Public()

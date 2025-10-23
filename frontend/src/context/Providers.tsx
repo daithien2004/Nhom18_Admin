@@ -7,15 +7,9 @@ import { store } from '../store/store';
 import { SessionProvider } from 'next-auth/react';
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
-
   return (
     <SessionProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </Provider>
+      <Provider store={store}>{children}</Provider>
     </SessionProvider>
   );
 }

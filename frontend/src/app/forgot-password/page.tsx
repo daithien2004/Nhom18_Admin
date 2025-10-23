@@ -54,9 +54,7 @@ export default function ForgotPasswordPage() {
         newPassword: data.newPassword,
       }).unwrap();
       setStep('success');
-    } catch (err) {
-      
-    }
+    } catch (err) {}
   };
 
   const handleSendOtp = async () => {

@@ -6,3 +6,10 @@ export const NESTJS_AUTH_ENDPOINTS = {
   profile: '/auth/profile',
   resendOtp: '/auth/resend-otp',
 };
+
+export const NESTJS_DASHBOARD_ENDPOINTS = {
+  stats: '/dashboard/stats',
+  activeUsers: '/dashboard/active-users',
+  recentReports: '/dashboard/recent-reports',
+  recentActivities: '/dashboard/recent-activities',
+};

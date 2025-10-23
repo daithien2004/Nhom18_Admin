@@ -12,6 +12,7 @@ import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { OtpService } from '../otp/otp.service';
 import { SignupLocalDto } from './dto/auth.dto';
+import { AuthUser } from './interfaces/auth-user.interface';
 
 // FORMAT CHUẨN cho mỗi method:
 // 1. Input validation
@@ -29,7 +30,7 @@ export class AuthService {
     private otpService: OtpService,
   ) {}
 
-  async login(user: any) {
+  async login(user: AuthUser) {
     // VALIDATION
     if (!user) {
       throw new UnauthorizedException('User not found');
@@ -51,11 +52,6 @@ export class AuthService {
         username: user.username,
       },
     };
-  }
-
-  async logout() {
-    // RETURN
-    return { message: 'Logged out successfully' };
   }
 
   async signup(dto: SignupLocalDto): Promise<string> {

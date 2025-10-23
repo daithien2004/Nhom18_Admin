@@ -5,34 +5,36 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { PostsModule } from './modules/posts/posts.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { ActivitiesModule } from './modules/activities/activities.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import mongoose from 'mongoose';
 
 // Cấu hình toàn cục cho Mongoose để chuẩn hóa id
-mongoose.set('toJSON', {
-  virtuals: true,
-  transform: (doc, ret: any) => {
-    // Chỉ thêm id nếu chưa tồn tại
-    if (!ret.id && ret._id) {
-      ret.id = ret._id.toString();
+const MongooseGlobalConfig = {
+  virtuals: true, // Bật trường ảo 'id' (tạo từ _id)
+  versionKey: false, // Xóa trường __v
+  transform: (doc: any, ret: any) => {
+    // Xóa trường _id sau khi trường id ảo đã được tạo
+    if (ret._id) {
       delete ret._id;
     }
-    delete ret.__v; // Xóa trường __v
+    // Xóa __v nếu chưa bị xóa bởi versionKey: false
+    if (ret.__v) {
+      delete ret.__v;
+    }
     return ret;
   },
-});
+};
 
-mongoose.set('toObject', {
-  virtuals: true,
-  transform: (doc, ret: any) => {
-    // Chỉ thêm id nếu chưa tồn tại
-    if (!ret.id && ret._id) {
-      ret.id = ret._id.toString();
-      delete ret._id;
-    }
-    delete ret.__v; // Xóa trường __v
-    return ret;
-  },
-});
+// Cấu hình toJSON: áp dụng khi gọi .toJSON() hoặc NestJS trả về kết quả
+mongoose.set('toJSON', MongooseGlobalConfig);
+
+// Cấu hình toObject: áp dụng khi gọi .toObject()
+mongoose.set('toObject', MongooseGlobalConfig);
 
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '@/src/common/guards/jwt-auth.guard';
@@ -85,6 +87,12 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     UsersModule,
     AuthModule,
     OtpModule,
+    DashboardModule,
+    PostsModule,
+    CommentsModule,
+    ReportsModule,
+    ActivitiesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [
