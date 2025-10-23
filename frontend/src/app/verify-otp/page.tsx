@@ -1,26 +1,26 @@
 // app/verify-otp/page.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useResendOtpMutation,
   useVerifyOtpMutation,
-} from '@/src/features/auth/api/authApi';
+} from "@/src/features/auth/api/authApi";
 
 export default function VerifyOtpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const email = searchParams.get("email") || "";
 
   const [verifyOtp, { isLoading: isVerifying, error: verifyError }] =
     useVerifyOtpMutation();
   const [resendOtp, { isLoading: isResending, error: resendError }] =
     useResendOtpMutation();
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
   const [success, setSuccess] = useState(false);
-  const [resendMessage, setResendMessage] = useState('');
+  const [resendMessage, setResendMessage] = useState("");
 
   const handleChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -37,7 +37,7 @@ export default function VerifyOtpPage() {
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
       prevInput?.focus();
     }
@@ -46,7 +46,7 @@ export default function VerifyOtpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const otpCode = otp.join('');
+    const otpCode = otp.join("");
     if (otpCode.length !== 6) {
       return;
     }
@@ -55,20 +55,20 @@ export default function VerifyOtpPage() {
       await verifyOtp({ email, otp: otpCode }).unwrap();
       setSuccess(true);
       setTimeout(() => {
-        router.push('/login');
+        router.push("/login");
       }, 2000);
     } catch (err: any) {
-      console.error('Verification failed:', err);
+      console.error("Verification failed:", err);
     }
   };
 
   const handleResendOtp = async () => {
-    setResendMessage('');
+    setResendMessage("");
     try {
       await resendOtp({ email }).unwrap();
-      setResendMessage('A new OTP has been sent successfully.');
+      setResendMessage("A new OTP has been sent successfully.");
     } catch (err: any) {
-      console.error('Resend OTP failed:', err);
+      console.error("Resend OTP failed:", err);
     }
   };
 
@@ -110,17 +110,17 @@ export default function VerifyOtpPage() {
             Verify Your Email
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            We sent a 6-digit code to{' '}
+            We sent a 6-digit code to{" "}
             <span className="font-medium">{email}</span>
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {verifyError && 'data' in verifyError && (
+          {verifyError && "data" in verifyError && (
             <div className="rounded-md bg-red-50 p-4">
               <p className="text-sm text-red-800">
                 {(verifyError.data as { message: string }).message ||
-                  'Invalid OTP'}
+                  "Invalid OTP"}
               </p>
             </div>
           )}
@@ -147,26 +147,26 @@ export default function VerifyOtpPage() {
             disabled={isVerifying}
             className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
           >
-            {isVerifying ? 'Verifying...' : 'Verify OTP'}
+            {isVerifying ? "Verifying..." : "Verify OTP"}
           </button>
 
           <div className="text-center text-sm mt-4 space-y-2">
             {resendMessage && <p className="text-green-600">{resendMessage}</p>}
 
-            {resendError && 'data' in resendError && (
+            {resendError && "data" in resendError && (
               <p className="text-red-600">
                 {(resendError.data as { message: string }).message ||
-                  'Failed to resend'}
+                  "Failed to resend"}
               </p>
             )}
 
-            <span className="text-gray-600">Didn't receive the code? </span>
+            <span className="text-gray-600">Did not receive the code? </span>
             <button
               type="button"
               className="font-medium text-indigo-600 hover:text-indigo-500"
               onClick={handleResendOtp}
             >
-              {isResending ? 'Resending...' : 'Resend OTP'}
+              {isResending ? "Resending..." : "Resend OTP"}
             </button>
           </div>
         </form>

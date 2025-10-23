@@ -1,35 +1,36 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedServerApi } from "@/src/lib/auth-server-api";
+import { NESTJS_USERS_ENDPOINTS } from "@/src/constants/server-endpoints";
 
-// Khai báo endpoint của NestJS (port 5000)
-const BASE_URL = "http://localhost:5000/users";
-
-// Xây dựng đường dẫn động dựa trên slug (ví dụ: /users/:id/ban)
-function buildTargetPath(slug: string[] | undefined): string {
-  if (!slug || slug.length === 0) return BASE_URL;
-
+function buildPath(slug: string[] | undefined): {
+  method: "GET" | "PATCH" | "POST";
+  path: string;
+} {
+  if (!slug || slug.length === 0) {
+    // This route is only for dynamic paths; root handled by ../route.ts
+    return { method: "GET", path: NESTJS_USERS_ENDPOINTS.list };
+  }
   const [id, action] = slug;
-  if (!id) return BASE_URL;
+  if (!id) return { method: "GET", path: NESTJS_USERS_ENDPOINTS.list };
 
   switch (action) {
     case undefined:
-      return `${BASE_URL}/${id}`;
+      return { method: "GET", path: NESTJS_USERS_ENDPOINTS.detail(id) };
     case "ban":
-      return `${BASE_URL}/${id}/ban`;
+      return { method: "PATCH", path: NESTJS_USERS_ENDPOINTS.ban(id) };
     case "unban":
-      return `${BASE_URL}/${id}/unban`;
+      return { method: "PATCH", path: NESTJS_USERS_ENDPOINTS.unban(id) };
     case "verify":
-      return `${BASE_URL}/${id}/verify`;
+      return { method: "PATCH", path: NESTJS_USERS_ENDPOINTS.verify(id) };
     case "unverify":
-      return `${BASE_URL}/${id}/unverify`;
+      return { method: "PATCH", path: NESTJS_USERS_ENDPOINTS.unverify(id) };
     case "reset-password":
-      return `${BASE_URL}/${id}/reset-password`;
+      return { method: "POST", path: NESTJS_USERS_ENDPOINTS.resetPassword(id) };
     default:
-      return BASE_URL;
+      return { method: "GET", path: NESTJS_USERS_ENDPOINTS.detail(id) };
   }
 }
 
-// GET: Lấy danh sách hoặc chi tiết user
 export async function GET(
   request: Request,
   { params }: { params: { slug?: string[] } }
@@ -37,14 +38,10 @@ export async function GET(
   try {
     const authenticatedApi = await getAuthenticatedServerApi();
     const { searchParams } = new URL(request.url);
+    const query = Object.fromEntries(searchParams.entries());
 
-    const query: Record<string, any> = {};
-    searchParams.forEach((v, k) => (query[k] = v));
-
-    const path = buildTargetPath(params.slug);
+    const { path } = buildPath(params.slug);
     const response = await authenticatedApi.get(path, { params: query });
-
-    // chỉ trả ra phần `data` thật bên trong
     return NextResponse.json(response.data);
   } catch (error: any) {
     const isAuthError =
@@ -53,19 +50,18 @@ export async function GET(
     const status = isAuthError ? 401 : error.response?.status || 500;
     const message = isAuthError
       ? "Authentication required."
-      : error.response?.data?.message || "Failed to fetch users";
+      : error.response?.data?.message || "Failed to fetch user";
     return NextResponse.json({ message }, { status });
   }
 }
 
-// PATCH: Cập nhật, ban/unban, verify/unverify
 export async function PATCH(
   request: Request,
   { params }: { params: { slug?: string[] } }
 ) {
   try {
     const authenticatedApi = await getAuthenticatedServerApi();
-    const path = buildTargetPath(params.slug);
+    const { path } = buildPath(params.slug);
     const body = await request.json().catch(() => ({}));
 
     const response = await authenticatedApi.patch(path, body);
@@ -82,17 +78,20 @@ export async function PATCH(
   }
 }
 
-// POST: Tạo user mới hoặc reset mật khẩu
 export async function POST(
   request: Request,
   { params }: { params: { slug?: string[] } }
 ) {
   try {
     const authenticatedApi = await getAuthenticatedServerApi();
-    const path = buildTargetPath(params.slug);
+    const { path } = buildPath(params.slug);
     const body = await request.json().catch(() => ({}));
 
-    const response = await authenticatedApi.post(path, body);
+    const response = await authenticatedServerApiPost(
+      authenticatedApi,
+      path,
+      body
+    );
     return NextResponse.json(response.data);
   } catch (error: any) {
     const isAuthError =
@@ -104,4 +103,24 @@ export async function POST(
       : error.response?.data?.message || "Failed to execute action";
     return NextResponse.json({ message }, { status });
   }
+}
+
+async function authenticatedServerApiPost(
+  authenticatedApi: any,
+  path: string,
+  body: any
+) {
+  // Special-case validation for reset-password
+  if (path.endsWith("/reset-password")) {
+    const newPassword = body?.newPassword;
+    if (!newPassword || newPassword.length < 6) {
+      throw {
+        response: {
+          status: 400,
+          data: { message: "Password must be at least 6 characters" },
+        },
+      };
+    }
+  }
+  return authenticatedApi.post(path, body);
 }

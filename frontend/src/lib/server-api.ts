@@ -1,10 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
+
+// Ensure backend base URL is set. Fallback to local dev backend with global prefix /api
+const baseURL = process.env.NEST_API_URL || "http://localhost:5000/api";
 
 const serverApi = axios.create({
-  // baseURL trỏ thẳng đến địa chỉ của NestJS backend
-  baseURL: process.env.NEST_API_URL,
+  baseURL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 

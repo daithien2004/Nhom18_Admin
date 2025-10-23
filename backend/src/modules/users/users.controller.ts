@@ -8,12 +8,14 @@ import {
   HttpStatus,
   Param,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/user.dto';
-import { Public } from '@/src/common/decorators/customize';
+import { JwtAuthGuard } from '@/src/common/guards/jwt-auth.guard';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -30,22 +32,28 @@ export class UsersController {
     };
   }
 
-  @Public()
   @Get()
   async findAll(
-    @Query() query: string,
-    @Query('current') current: string,
-    @Query('pageSize') pageSize: string,
+    @Query('search') search?: string,
+    @Query('current') current?: string,
+    @Query('pageSize') pageSize?: string,
   ) {
-    const result = await this.usersService.findAll(query, +current, +pageSize);
+    const result = await this.usersService.findAll(
+      search,
+      Number(current),
+      Number(pageSize),
+    );
+
     return {
       message: 'Users retrieved successfully',
-      data: result,
+      data: {
+        items: result.items,
+        pagination: result.pagination,
+      },
     };
   }
 
   // Lấy thông tin profile của user theo id
-  @Public()
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.getProfile(id);
@@ -56,7 +64,6 @@ export class UsersController {
   }
 
   // Ban user
-  @Public()
   @Patch(':id/ban')
   async ban(@Param('id') id: string) {
     const result = await this.usersService.banUser(id);
@@ -64,7 +71,6 @@ export class UsersController {
   }
 
   // Gỡ ban user
-  @Public()
   @Patch(':id/unban')
   async unban(@Param('id') id: string) {
     const result = await this.usersService.unbanUser(id);
@@ -72,7 +78,6 @@ export class UsersController {
   }
 
   // Xác minh tài khoản
-  @Public()
   @Patch(':id/verify')
   async verify(@Param('id') id: string) {
     const result = await this.usersService.verifyUser(id);
@@ -80,15 +85,13 @@ export class UsersController {
   }
 
   // Hủy xác minh tài khoản
-  @Public()
   @Patch(':id/unverify')
   async unverify(@Param('id') id: string) {
     const result = await this.usersService.unverifyUser(id);
     return { message: 'User unverified successfully', data: result };
   }
 
-  // ✅ Admin đặt lại mật khẩu
-  @Public()
+  //  Admin đặt lại mật khẩu
   @Post(':id/reset-password')
   @HttpCode(HttpStatus.OK)
   async resetPassword(

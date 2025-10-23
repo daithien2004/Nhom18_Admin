@@ -36,12 +36,19 @@ export class UsersService {
     });
   }
 
-  async findAll(query: string, current: number, pageSize: number) {
-    const { filter, sort } = aqp(query);
+  async findAll(search?: string, current = 1, pageSize = 10) {
+    const filter: any = {};
 
-    delete (filter as any).current;
-    delete (filter as any).pageSize;
+    // 👉 Nếu có search, tìm theo username hoặc email (regex, không phân biệt hoa thường)
+    if (search && search.trim() !== '') {
+      const keyword = search.trim();
+      filter.$or = [
+        { username: { $regex: keyword, $options: 'i' } },
+        { email: { $regex: keyword, $options: 'i' } },
+      ];
+    }
 
+    // Giới hạn phân trang
     current = Number(current) || 1;
     pageSize = Number(pageSize) || 10;
     if (current < 1) current = 1;
@@ -54,7 +61,6 @@ export class UsersService {
 
     const items = await this.userModel
       .find(filter)
-      .sort((sort as any) ?? {})
       .skip(offset)
       .limit(pageSize)
       .select('-password -hashedRt')
