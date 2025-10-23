@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
@@ -74,5 +78,80 @@ export class UsersService {
 
   async findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();
+  }
+
+  // Lấy thông tin profile (ẩn mật khẩu)
+  async getProfile(id: string) {
+    const user = await this.userModel
+      .findById(id)
+      .select('-password -hashedRt')
+      .lean()
+      .exec();
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  // Ban (cấm) người dùng
+  async banUser(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+    user.isBanned = true;
+    await user.save();
+    return { id: user._id.toString(), isBanned: user.isBanned };
+  }
+
+  // Gỡ ban người dùng
+  async unbanUser(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+    user.isBanned = false;
+    await user.save();
+    return { id: user._id.toString(), isBanned: user.isBanned };
+  }
+
+  // Xác minh tài khoản
+  async verifyUser(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+    user.isVerified = true;
+    await user.save();
+    return { id: user._id.toString(), isVerified: user.isVerified };
+  }
+
+  // Hủy xác minh tài khoản
+  async unverifyUser(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+    user.isVerified = false;
+    await user.save();
+    return { id: user._id.toString(), isVerified: user.isVerified };
+  }
+
+  // Admin đặt lại mật khẩu cho người dùng
+  async adminResetPassword(id: string, newPassword: string) {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) throw new NotFoundException('User not found');
+
+    if (!newPassword || newPassword.length < 6) {
+      throw new BadRequestException(
+        'New password must be at least 6 characters',
+      );
+    }
+
+    // Không cho đặt lại cùng mật khẩu cũ
+    const isSame = user.password
+      ? await bcrypt.compare(newPassword, user.password)
+      : false;
+    if (isSame) {
+      throw new BadRequestException(
+        'New password must be different from current password',
+      );
+    }
+
+    // Hash mật khẩu mới và lưu lại
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashPassword;
+    await user.save();
+    return { id: user._id.toString() };
   }
 }

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Activity } from '@/src/features/dashboard';
+import { Activity } from "@/src/features/dashboard";
 
 interface RecentActivitiesListProps {
   activities: Activity[];
@@ -13,26 +13,26 @@ export default function RecentActivitiesList({
 }: RecentActivitiesListProps) {
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'like':
-        return '❤️';
-      case 'comment':
-        return '💬';
+      case "like":
+        return "❤️";
+      case "comment":
+        return "💬";
       default:
-        return '📝';
+        return "📝";
     }
   };
 
-  const getActivityText = (activity: Activity) => {
-    const actor = activity.actor.username;
-    const postOwner = activity.postOwner.username;
+  // const getActivityText = (activity: Activity) => {
+  //   const actor = activity.actor.username;
+  //   const postOwner = activity.postOwner.username;
 
-    if (activity.type === 'like') {
-      return `${actor} đã thích bài viết của ${postOwner}`;
-    } else if (activity.type === 'comment') {
-      return `${actor} đã bình luận bài viết của ${postOwner}`;
-    }
-    return `${actor} đã tương tác với bài viết của ${postOwner}`;
-  };
+  //   if (activity.type === "like") {
+  //     return `${actor} đã thích bài viết của ${postOwner}`;
+  //   } else if (activity.type === "comment") {
+  //     return `${actor} đã bình luận bài viết của ${postOwner}`;
+  //   }
+  //   return `${actor} đã tương tác với bài viết của ${postOwner}`;
+  // };
 
   if (loading) {
     return (
@@ -72,9 +72,10 @@ export default function RecentActivitiesList({
               {getActivityIcon(activity.type)}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">
+              {/* <p className="text-sm font-medium text-gray-900">
                 {getActivityText(activity)}
-              </p>
+              </p> */}
+
               {/* <p className="text-xs text-gray-500 truncate">
                 {activity.post.content.length > 50
                   ? `${activity.post.content.substring(0, 50)}...`
@@ -82,14 +83,14 @@ export default function RecentActivitiesList({
               </p> */}
               {activity.comment && (
                 <p className="text-xs text-gray-600 mt-1">
-                  Bình luận:{' '}
+                  Bình luận:{" "}
                   {activity.comment.content.length > 30
                     ? `${activity.comment.content.substring(0, 30)}...`
                     : activity.comment.content}
                 </p>
               )}
               <p className="text-xs text-gray-400 mt-1">
-                {new Date(activity.createdAt).toLocaleString('vi-VN')}
+                {new Date(activity.createdAt).toLocaleString("vi-VN")}
               </p>
             </div>
           </div>

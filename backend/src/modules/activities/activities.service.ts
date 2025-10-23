@@ -46,7 +46,9 @@ export class ActivitiesService {
   }
 
   async update(id: string, updateActivityDto: any): Promise<Activity | null> {
-    return this.activityModel.findByIdAndUpdate(id, updateActivityDto, { new: true }).exec();
+    return this.activityModel
+      .findByIdAndUpdate(id, updateActivityDto, { new: true })
+      .exec();
   }
 
   async delete(id: string): Promise<Activity | null> {
@@ -63,14 +65,14 @@ export class ActivitiesService {
 
   async countByDateRange(startDate: Date, endDate: Date): Promise<number> {
     return this.activityModel.countDocuments({
-      createdAt: { $gte: startDate, $lte: endDate }
+      createdAt: { $gte: startDate, $lte: endDate },
     });
   }
 
   async getActiveUsers(startDate: Date): Promise<string[]> {
     const userIds = await this.activityModel.distinct('actor', {
-      createdAt: { $gte: startDate }
+      createdAt: { $gte: startDate },
     });
-    return userIds.map(id => id.toString());
+    return userIds.map((id) => id.toString());
   }
 }

@@ -5,7 +5,9 @@ import { ActivitiesService } from './activities.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Activity.name, schema: ActivitySchema }]),
+    MongooseModule.forFeature([
+      { name: Activity.name, schema: ActivitySchema },
+    ]),
   ],
   providers: [ActivitiesService],
   exports: [ActivitiesService],

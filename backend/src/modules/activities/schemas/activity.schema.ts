@@ -14,10 +14,10 @@ export class Activity {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   postOwner: Types.ObjectId;
 
-  @Prop({ 
-    type: String, 
-    enum: ['like', 'comment'], 
-    required: true 
+  @Prop({
+    type: String,
+    enum: ['like', 'comment'],
+    required: true,
   })
   type: string;
 

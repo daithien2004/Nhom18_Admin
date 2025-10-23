@@ -1,37 +1,40 @@
-'use client';
+"use client";
 
-import { Report } from '@/src/types/dashboard';
+import { Report } from "@/src/features/dashboard/types/dashboard";
 
 interface RecentReportsListProps {
   reports: Report[];
   loading?: boolean;
 }
 
-export default function RecentReportsList({ reports, loading = false }: RecentReportsListProps) {
+export default function RecentReportsList({
+  reports,
+  loading = false,
+}: RecentReportsListProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'reviewing':
-        return 'bg-blue-100 text-blue-800';
-      case 'resolved':
-        return 'bg-green-100 text-green-800';
-      case 'dismissed':
-        return 'bg-gray-100 text-gray-800';
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "reviewing":
+        return "bg-blue-100 text-blue-800";
+      case "resolved":
+        return "bg-green-100 text-green-800";
+      case "dismissed":
+        return "bg-gray-100 text-gray-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getReasonText = (reason: string) => {
     const reasonMap: Record<string, string> = {
-      spam: 'Spam',
-      inappropriate_content: 'Nội dung không phù hợp',
-      harassment: 'Quấy rối',
-      fake_information: 'Thông tin giả',
-      violence: 'Bạo lực',
-      hate_speech: 'Ngôn từ thù địch',
-      other: 'Khác',
+      spam: "Spam",
+      inappropriate_content: "Nội dung không phù hợp",
+      harassment: "Quấy rối",
+      fake_information: "Thông tin giả",
+      violence: "Bạo lực",
+      hate_speech: "Ngôn từ thù địch",
+      other: "Khác",
     };
     return reasonMap[reason] || reason;
   };
@@ -39,7 +42,9 @@ export default function RecentReportsList({ reports, loading = false }: RecentRe
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Báo cáo gần đây</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Báo cáo gần đây
+        </h3>
         <div className="space-y-3">
           {[...Array(5)].map((_, index) => (
             <div key={index} className="animate-pulse">
@@ -59,14 +64,16 @@ export default function RecentReportsList({ reports, loading = false }: RecentRe
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Báo cáo gần đây</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Báo cáo gần đây
+      </h3>
       <div className="space-y-3">
         {reports.map((report) => (
           <div key={report.id} className="p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-medium text-gray-900">
-                  {report.reporter.username}
+                  {/* {report.reporter.username} */}
                 </span>
                 <span className="text-sm text-gray-500">báo cáo</span>
                 {report.reportedUser && (
@@ -81,17 +88,25 @@ export default function RecentReportsList({ reports, loading = false }: RecentRe
                   <span className="text-sm text-gray-500">bình luận</span>
                 )}
               </div>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(report.status)}`}>
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                  report.status
+                )}`}
+              >
                 {report.status}
               </span>
             </div>
             <div className="text-sm text-gray-600">
-              <p><strong>Lý do:</strong> {getReasonText(report.reason)}</p>
+              <p>
+                <strong>Lý do:</strong> {getReasonText(report.reason)}
+              </p>
               {report.description && (
-                <p className="mt-1"><strong>Mô tả:</strong> {report.description}</p>
+                <p className="mt-1">
+                  <strong>Mô tả:</strong> {report.description}
+                </p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                {new Date(report.createdAt).toLocaleString('vi-VN')}
+                {new Date(report.createdAt).toLocaleString("vi-VN")}
               </p>
             </div>
           </div>
