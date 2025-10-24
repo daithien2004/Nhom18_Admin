@@ -13,7 +13,7 @@ export const usersApi = createApi({
   tagTypes: ["Users", "User"],
 
   endpoints: (builder) => ({
-    // ✅ Lấy danh sách người dùng (có phân trang + tìm kiếm)
+    // Lấy danh sách người dùng (có phân trang + tìm kiếm)
     listUsers: builder.query<
       UserListResponse,
       {
@@ -30,7 +30,7 @@ export const usersApi = createApi({
       providesTags: ["Users"],
     }),
 
-    // ✅ Lấy chi tiết người dùng
+    // Lấy chi tiết người dùng
     getUser: builder.query<User, string>({
       query: (id) => ({
         url: BFF_USERS_ENDPOINTS.detail(id),
@@ -39,7 +39,7 @@ export const usersApi = createApi({
       providesTags: (result, error, id) => [{ type: "User", id }],
     }),
 
-    // ✅ Khóa người dùng
+    // Khóa người dùng
     banUser: builder.mutation<void, string>({
       query: (id) => ({
         url: BFF_USERS_ENDPOINTS.ban(id),
@@ -48,7 +48,7 @@ export const usersApi = createApi({
       invalidatesTags: ["Users"],
     }),
 
-    // ✅ Mở khóa người dùng
+    // Mở khóa người dùng
     unbanUser: builder.mutation<void, string>({
       query: (id) => ({
         url: BFF_USERS_ENDPOINTS.unban(id),
@@ -57,7 +57,7 @@ export const usersApi = createApi({
       invalidatesTags: ["Users"],
     }),
 
-    // ✅ Xác thực người dùng (verify)
+    // Xác thực người dùng (verify)
     verifyUser: builder.mutation<void, string>({
       query: (id) => ({
         url: BFF_USERS_ENDPOINTS.verify(id),
@@ -66,7 +66,7 @@ export const usersApi = createApi({
       invalidatesTags: ["Users", "User"],
     }),
 
-    // ✅ Bỏ xác thực người dùng (unverify)
+    // Bỏ xác thực người dùng (unverify)
     unverifyUser: builder.mutation<void, string>({
       query: (id) => ({
         url: BFF_USERS_ENDPOINTS.unverify(id),
@@ -75,7 +75,7 @@ export const usersApi = createApi({
       invalidatesTags: ["Users", "User"],
     }),
 
-    // ✅ Đặt lại mật khẩu người dùng
+    // Đặt lại mật khẩu người dùng
     resetPassword: builder.mutation<void, { id: string; newPassword: string }>({
       query: ({ id, newPassword }) => ({
         url: BFF_USERS_ENDPOINTS.resetPassword(id),
@@ -87,7 +87,7 @@ export const usersApi = createApi({
   }),
 });
 
-// ✅ Export hooks tự động sinh ra bởi RTK Query
+// Export hooks tự động sinh ra bởi RTK Query
 export const {
   useListUsersQuery,
   useGetUserQuery,

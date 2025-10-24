@@ -31,6 +31,13 @@ export class Post {
 
   @Prop({ type: Types.ObjectId, ref: 'Post', default: null })
   sharedFrom?: Types.ObjectId;
+
+  // Content moderation flags
+  @Prop({ type: Boolean, default: false })
+  isHidden: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  isDeleted: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

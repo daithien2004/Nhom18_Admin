@@ -23,3 +23,12 @@ export const NESTJS_USERS_ENDPOINTS = {
   unverify: (id: string) => `/users/${id}/unverify`,
   resetPassword: (id: string) => `/users/${id}/reset-password`,
 };
+
+export const NESTJS_POSTS_ENDPOINTS = {
+  list: "/posts",
+  detail: (id: string) => `/posts/${id}`,
+  update: (id: string) => `/posts/${id}`,
+  hide: (id: string) => `/posts/${id}/hide`,
+  unhide: (id: string) => `/posts/${id}/unhide`,
+  delete: (id: string) => `/posts/${id}/delete`,
+};
