@@ -11,6 +11,7 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { ReportsModule } from './modules/reports/reports.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ContentModerationModule } from './modules/content-moderation/content-moderation.module';
 import mongoose from 'mongoose';
 
 // Cấu hình toàn cục cho Mongoose để chuẩn hóa id
@@ -94,6 +95,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     ReportsModule,
     ActivitiesModule,
     NotificationsModule,
+    ContentModerationModule,
   ],
   controllers: [AppController],
   providers: [

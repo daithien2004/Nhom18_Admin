@@ -5,6 +5,7 @@ import { authApi } from "../features/auth/api/authApi";
 import { dashboardApi } from "../features/dashboard/api/dashboardApi";
 import { usersApi } from "../features/users/api/usersApi";
 import { postsApi } from "../features/posts";
+import { contentModerationApi } from "../features/content-moderation/api/content-moderation-api";
 
 export const store = configureStore({
   reducer: {
@@ -14,13 +15,15 @@ export const store = configureStore({
     [dashboardApi.reducerPath]: dashboardApi.reducer, // State: state.dashboardApi
     [usersApi.reducerPath]: usersApi.reducer, // State: state.usersApi
     [postsApi.reducerPath]: postsApi.reducer, // State: state.postsApi
+    [contentModerationApi.reducerPath]: contentModerationApi.reducer, // State: state.contentModerationApi
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       dashboardApi.middleware,
       usersApi.middleware,
-      postsApi.middleware
+      postsApi.middleware,
+      contentModerationApi.middleware
     ), // Thêm middleware của RTK Query
 });
 

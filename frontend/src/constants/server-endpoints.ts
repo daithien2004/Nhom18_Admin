@@ -32,3 +32,14 @@ export const NESTJS_POSTS_ENDPOINTS = {
   unhide: (id: string) => `/posts/${id}/unhide`,
   delete: (id: string) => `/posts/${id}/delete`,
 };
+
+// Toan: Content moderation endpoints
+export const NESTJS_CONTENT_MODERATION_ENDPOINTS = {
+  search: "/content-moderation/search",
+  flagged: "/content-moderation/flagged",
+  post: (id: string) => `/content-moderation/post/${id}`,
+  delete: (id: string) => `/content-moderation/post/${id}/delete`,
+  hide: (id: string) => `/content-moderation/post/${id}/hide`,
+  unhide: (id: string) => `/content-moderation/post/${id}/unhide`,
+  stats: "/content-moderation/stats",
+};

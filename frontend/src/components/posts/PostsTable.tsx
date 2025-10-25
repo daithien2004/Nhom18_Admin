@@ -8,7 +8,7 @@ type Post = {
   isHidden: boolean;
   isDeleted: boolean;
   createdAt: string;
-  author: { _id: string; username: string };
+  author?: { _id: string; username: string } | null;
 };
 
 type Props = {
@@ -78,10 +78,10 @@ export const PostsTable: React.FC<Props> = ({
             return (
               <tr key={p._id} className="hover:bg-gray-50 align-top">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-24 truncate max-w-[6rem]">
-                  {p.author._id}
+                  {p.author?._id || "N/A"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-20 truncate max-w-[6rem]">
-                  {p.author.username}
+                  {p.author?.username || "N/A"}
                 </td>
                 <td className="px-6 py-4">
                   {isRowEditing ? (
