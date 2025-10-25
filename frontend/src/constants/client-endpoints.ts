@@ -33,6 +33,14 @@ export const BFF_POSTS_ENDPOINTS = {
   delete: (id: string) => `/posts/${id}/delete`,
 };
 
+export const BFF_COMMENTS_ENDPOINTS = {
+  list: "/comments",
+  detail: (id: string) => `/comments/${id}`,
+  hide: (id: string) => `/comments/${id}/hide`,
+  unhide: (id: string) => `/comments/${id}/unhide`,
+  delete: (id: string) => `/comments/${id}/delete`,
+};
+
 // Toan: Content moderation endpoints
 export const BFF_CONTENT_MODERATION_ENDPOINTS = {
   search: "/content-moderation/search",

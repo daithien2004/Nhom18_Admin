@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   FileText,
+  MessageSquare,
   Shield,
   BarChart3,
   LogOut,
@@ -31,6 +32,11 @@ export function Navigation() {
       name: "Quản lý bài đăng",
       href: "/posts",
       icon: FileText,
+    },
+    {
+      name: "Quản lý bình luận",
+      href: "/comments",
+      icon: MessageSquare,
     },
     {
       name: "Kiểm duyệt nội dung", // Toan: New navigation item for content moderation
