@@ -3,4 +3,5 @@ export interface AuthUser {
   email: string;
   username: string;
   isVerified: boolean;
+  isAdmin: boolean;
 }

@@ -1,7 +1,9 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 
 export class DashboardStatsDto {
   @IsOptional()
-  @IsString()
-  period?: string = '24h'; // 24h, 7d, 30d
+  @IsIn(['24h', '7d', '30d'], {
+    message: 'Period must be one of: 24h, 7d, 30d',
+  })
+  period?: string = '24h'; // Default value
 }

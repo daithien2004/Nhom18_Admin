@@ -24,17 +24,19 @@ export const axiosBaseQuery =
       url: string;
       method?: AxiosRequestConfig['method'];
       body?: AxiosRequestConfig['data'];
+      params?: AxiosRequestConfig['params'];
       headers?: AxiosRequestConfig['headers'];
     },
     unknown,
     { status: number; data: ErrorResponseDto }
   > =>
-  async ({ url, method = 'GET', body, headers }) => {
+  async ({ url, method = 'GET', body, params, headers }) => {
     try {
       const result = await clientApi({
         url,
         method,
         data: body,
+        params,
         headers,
       });
 

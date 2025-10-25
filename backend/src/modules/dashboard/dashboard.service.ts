@@ -6,9 +6,10 @@ import { PostsService } from '../posts/posts.service';
 import { CommentsService } from '../comments/comments.service';
 import { ReportsService } from '../reports/reports.service';
 import { ActivitiesService } from '../activities/activities.service';
-import { NotificationsService } from '../notifications/notifications.service';
-import { DashboardStats, UserActivity } from './interfaces/dashboard-stats.interface';
-import { DashboardStatsDto } from './dto/dashboard-stats.dto';
+import {
+  DashboardStats,
+  UserActivity,
+} from './interfaces/dashboard-stats.interface';
 
 @Injectable()
 export class DashboardService {
@@ -18,14 +19,15 @@ export class DashboardService {
     private commentsService: CommentsService,
     private reportsService: ReportsService,
     private activitiesService: ActivitiesService,
-    private notificationsService: NotificationsService,
   ) {}
 
   async getDashboardStats(period: string = '24h'): Promise<DashboardStats> {
     // VALIDATION
     const validPeriods = ['24h', '7d', '30d'];
     if (!validPeriods.includes(period)) {
-      throw new BadRequestException('Invalid period. Must be one of: 24h, 7d, 30d');
+      throw new BadRequestException(
+        'Invalid period. Must be one of: 24h, 7d, 30d',
+      );
     }
 
     // EXECUTION
@@ -52,7 +54,7 @@ export class DashboardService {
 
     // Số users mới trong khoảng thời gian
     const newUsers = await this.userModel.countDocuments({
-      createdAt: { $gte: startDate }
+      createdAt: { $gte: startDate },
     });
 
     // Tổng số posts
@@ -65,23 +67,30 @@ export class DashboardService {
     const totalComments = await this.commentsService.count();
 
     // Số comments mới trong khoảng thời gian
-    const newComments = await this.commentsService.countByDateRange(startDate, now);
+    const newComments = await this.commentsService.countByDateRange(
+      startDate,
+      now,
+    );
 
     // Tổng số reports
     const totalReports = await this.reportsService.count();
 
     // Số reports mới trong khoảng thời gian
-    const newReports = await this.reportsService.countByDateRange(startDate, now);
+    const newReports = await this.reportsService.countByDateRange(
+      startDate,
+      now,
+    );
 
     // Số users hoạt động trong 24h (dựa trên activity)
-    const activeUsers24h = await this.activitiesService.getActiveUsers(
-      new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    ).then(users => users.length);
+    const activeUsers24h = await this.activitiesService
+      .getActiveUsers(new Date(now.getTime() - 24 * 60 * 60 * 1000))
+      .then((users) => users.length);
 
     // Thống kê reports theo status
     const pendingReports = await this.reportsService.countByStatus('pending');
     const resolvedReports = await this.reportsService.countByStatus('resolved');
-    const dismissedReports = await this.reportsService.countByStatus('dismissed');
+    const dismissedReports =
+      await this.reportsService.countByStatus('dismissed');
 
     // RETURN
     return {
@@ -111,12 +120,15 @@ export class DashboardService {
     const startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
     // Lấy danh sách users hoạt động trong 24h
-    const activeUserIds = await this.activitiesService.getActiveUsers(startDate);
+    const activeUserIds =
+      await this.activitiesService.getActiveUsers(startDate);
 
     // Lấy thông tin chi tiết của users
-    const users = await this.userModel.find({
-      _id: { $in: activeUserIds }
-    }).limit(limit);
+    const users = await this.userModel
+      .find({
+        _id: { $in: activeUserIds },
+      })
+      .limit(limit);
 
     // Tính toán thống kê cho từng user
     const userActivities: UserActivity[] = await Promise.all(
@@ -126,23 +138,27 @@ export class DashboardService {
         const likeCount = await this.activitiesService.countByType('like');
 
         // Lấy hoạt động gần nhất
-        const lastActivity = await this.activitiesService.findByActor(user._id.toString());
+        const lastActivity = await this.activitiesService.findByActor(
+          user._id.toString(),
+        );
 
         return {
           userId: user._id.toString(),
           username: user.username,
           email: user.email,
-          lastActivity: (lastActivity?.[0] as any)?.createdAt || (user as any).createdAt,
+          lastActivity:
+            (lastActivity?.[0] as any)?.createdAt || (user as any).createdAt,
           postCount,
           commentCount,
           likeCount,
         };
-      })
+      }),
     );
 
     // Sắp xếp theo hoạt động gần nhất
-    const sortedActivities = userActivities.sort((a, b) => 
-      new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime()
+    const sortedActivities = userActivities.sort(
+      (a, b) =>
+        new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime(),
     );
 
     // RETURN

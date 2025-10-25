@@ -8,7 +8,12 @@ export class Post {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   author: Types.ObjectId;
 
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    required: function (this: any) {
+      return !this.sharedFrom;
+    },
+  })
   content: string;
 
   @Prop({ type: String })
@@ -31,6 +36,12 @@ export class Post {
 
   @Prop({ type: Types.ObjectId, ref: 'Post', default: null })
   sharedFrom?: Types.ObjectId;
+
+  @Prop({ type: Boolean, default: false })
+  isHidden: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  isDeleted: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

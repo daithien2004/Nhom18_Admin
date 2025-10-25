@@ -55,6 +55,24 @@ export class User {
 
   @Prop({ default: false })
   isBanned: boolean;
+
+  @Prop({ required: false })
+  banReason?: string;
+
+  @Prop({ required: false })
+  bannedAt?: Date;
+
+  @Prop({ default: 0 })
+  warningCount: number;
+
+  @Prop({ type: [{ 
+    reason: String, 
+    createdAt: Date 
+  }], default: [] })
+  warnings: Array<{
+    reason: string;
+    createdAt: Date;
+  }>;
 }
 
 export type UserDocument = HydratedDocument<User>;

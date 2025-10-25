@@ -15,7 +15,12 @@ import {
 export const dashboardApi = createApi({
   reducerPath: 'dashboardApi',
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['DashboardStats', 'ActiveUsers', 'RecentReports', 'RecentActivities'],
+  tagTypes: [
+    'DashboardStats',
+    'ActiveUsers',
+    'RecentReports',
+    'RecentActivities',
+  ],
   endpoints: (builder) => ({
     getDashboardStats: builder.query<DashboardStats, DashboardStatsRequest>({
       query: (params) => ({

@@ -83,12 +83,10 @@ export const authOptions: NextAuthOptions = {
 
     // Callback khi redirect sau khi đăng nhập
     async redirect({ url, baseUrl }) {
-      // Luôn chuyển về dashboard sau khi đăng nhập thành công
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      // Nếu url không hợp lệ, chuyển về dashboard
-      return `${baseUrl}/dashboard`;
+      return `${baseUrl}/login`;
     },
   },
 

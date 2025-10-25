@@ -63,7 +63,7 @@ export interface Activity {
   };
   post: {
     id: string;
-    content: string;
+    content?: string;
   };
   postOwner: {
     id: string;

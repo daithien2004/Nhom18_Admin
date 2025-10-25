@@ -40,6 +40,11 @@ export class AuthService {
       throw new UnauthorizedException('Account has not been verified');
     }
 
+    // Ensure user is admin
+    if (!user.isAdmin) {
+      throw new ForbiddenException('User is not an admin');
+    }
+
     // EXECUTION
     const tokens = await this.signTokens(user.id.toString(), user.email);
 

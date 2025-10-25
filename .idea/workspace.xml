@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="33ec40a7-7bf3-4839-9ba8-65adbf3f1f1b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/activities/activities.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/activities/activities.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/comments/schemas/comment.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/comments/schemas/comment.schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/dashboard/dashboard.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/dashboard/dashboard.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/dashboard/dashboard.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/dashboard/dashboard.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/dashboard/dto/dashboard-stats.dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/dashboard/dto/dashboard-stats.dto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/posts/schemas/post.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/posts/schemas/post.schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/reports/reports.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/reports/reports.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/reports/reports.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/reports/reports.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/users/schemas/user.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/users/schemas/user.schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/api/auth/[...nextauth]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/api/auth/[...nextauth]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/api/dashboard/stats/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/api/dashboard/stats/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/dashboard/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/forgot-password/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/login/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/signup/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/verify-otp/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/dashboard/RecentActivitiesList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dashboard/RecentActivitiesList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/dashboard/RecentReportsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dashboard/RecentReportsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/constants/client-endpoints.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/client-endpoints.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/constants/server-endpoints.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/server-endpoints.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/dashboard/api/dashboardApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/dashboard/api/dashboardApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/features/dashboard/types/dashboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/features/dashboard/types/dashboard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/client-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/client-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/store.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="34YFezuwzocvxjlgqbnONhNBOnv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/Tailieuhoc/T2_CNPMM/Nhom18_admin_thanh"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33ec40a7-7bf3-4839-9ba8-65adbf3f1f1b" name="Changes" comment="" />
+      <created>1761382698101</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1761382698101</updated>
+    </task>
+    <servers />
+  </component>
+</project>

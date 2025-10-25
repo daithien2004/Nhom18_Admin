@@ -16,6 +16,12 @@ export class Comment {
 
   @Prop({ type: [Types.ObjectId], ref: 'User', default: [] })
   likes: Types.ObjectId[];
+
+  @Prop({ type: Boolean, default: false })
+  isHidden: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  isDeleted: boolean;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

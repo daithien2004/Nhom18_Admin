@@ -24,6 +24,12 @@ export default function RecentActivitiesList({
 
   const getActivityText = (activity: Activity) => {
     const actor = activity.actor.username;
+
+    // Kiểm tra nếu bài viết đã bị xóa (activity.post là null/undefined)
+    if (!activity.post) {
+      return `${actor} đã tương tác với một bài viết đã bị xóa`;
+    }
+
     const postOwner = activity.postOwner.username;
 
     if (activity.type === 'like') {
@@ -63,37 +69,60 @@ export default function RecentActivitiesList({
         Hoạt động gần đây
       </h3>
       <div className="space-y-3">
-        {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
-          >
-            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm">
-              {getActivityIcon(activity.type)}
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">
-                {getActivityText(activity)}
-              </p>
-              {/* <p className="text-xs text-gray-500 truncate">
-                {activity.post.content.length > 50
-                  ? `${activity.post.content.substring(0, 50)}...`
-                  : activity.post.content}
-              </p> */}
-              {activity.comment && (
-                <p className="text-xs text-gray-600 mt-1">
-                  Bình luận:{' '}
-                  {activity.comment.content.length > 30
-                    ? `${activity.comment.content.substring(0, 30)}...`
-                    : activity.comment.content}
+        {activities.map((activity) => {
+          const isPostDeleted = !activity.post;
+
+          return (
+            <div
+              key={activity.id}
+              className={`flex items-center space-x-3 p-3 rounded-lg ${
+                isPostDeleted
+                  ? 'bg-red-50 opacity-70' // Thêm style khác biệt cho bài viết đã xóa
+                  : 'bg-gray-50'
+              }`}
+            >
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${
+                  isPostDeleted ? 'bg-red-400' : 'bg-indigo-500'
+                }`}
+              >
+                {isPostDeleted ? '❌' : getActivityIcon(activity.type)}
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900">
+                  {getActivityText(activity)}
                 </p>
-              )}
-              <p className="text-xs text-gray-400 mt-1">
-                {new Date(activity.createdAt).toLocaleString('vi-VN')}
-              </p>
+
+                {/* HIỂN THỊ NỘI DUNG BÀI VIẾT HOẶC THÔNG BÁO BÀI VIẾT ĐÃ BỊ XÓA */}
+                {isPostDeleted ? (
+                  <p className="text-xs text-red-600 italic truncate">
+                    Bài viết này đã bị xóa.
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-500 truncate">
+                    {activity.post?.content && activity.post.content.length > 50
+                      ? `${activity.post.content.substring(0, 50)}...`
+                      : activity.post.content}
+                  </p>
+                )}
+
+                {/* HIỂN THỊ NỘI DUNG BÌNH LUẬN (chỉ khi không phải bài viết đã xóa) */}
+                {activity.comment && !isPostDeleted && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Bình luận:{' '}
+                    {activity.comment.content.length > 30
+                      ? `${activity.comment.content.substring(0, 30)}...`
+                      : activity.comment.content}
+                  </p>
+                )}
+
+                <p className="text-xs text-gray-400 mt-1">
+                  {new Date(activity.createdAt).toLocaleString('vi-VN')}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -21,20 +21,13 @@ export class ActivitiesService {
     return this.activityModel.find({ actor: actorId }).exec();
   }
 
-  async findByPost(postId: string): Promise<Activity[]> {
-    return this.activityModel.find({ post: postId }).exec();
-  }
-
-  async findByType(type: string): Promise<Activity[]> {
-    return this.activityModel.find({ type }).exec();
-  }
-
   async findRecent(limit: number = 20): Promise<Activity[]> {
     return this.activityModel
       .find()
       .populate('actor', 'username email')
       .populate('post', 'content')
       .populate('comment', 'content')
+      .populate('postOwner', 'username')
       .sort({ createdAt: -1 })
       .limit(limit)
       .exec();
@@ -46,7 +39,9 @@ export class ActivitiesService {
   }
 
   async update(id: string, updateActivityDto: any): Promise<Activity | null> {
-    return this.activityModel.findByIdAndUpdate(id, updateActivityDto, { new: true }).exec();
+    return this.activityModel
+      .findByIdAndUpdate(id, updateActivityDto, { new: true })
+      .exec();
   }
 
   async delete(id: string): Promise<Activity | null> {
@@ -63,14 +58,15 @@ export class ActivitiesService {
 
   async countByDateRange(startDate: Date, endDate: Date): Promise<number> {
     return this.activityModel.countDocuments({
-      createdAt: { $gte: startDate, $lte: endDate }
+      createdAt: { $gte: startDate, $lte: endDate },
     });
   }
 
   async getActiveUsers(startDate: Date): Promise<string[]> {
     const userIds = await this.activityModel.distinct('actor', {
-      createdAt: { $gte: startDate }
+      createdAt: { $gte: startDate },
     });
-    return userIds.map(id => id.toString());
+
+    return userIds.map((id) => id.toString());
   }
 }
