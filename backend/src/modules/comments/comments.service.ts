@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, Types } from 'mongoose';
 import { Comment, CommentDocument } from './schemas/comment.schema';
@@ -93,7 +97,7 @@ export class CommentsService {
       .populate('author', 'username') // Lấy thông tin username của tác giả
       .populate({
         path: 'postId',
-        select: 'content author',
+        select: 'content author caption',
         populate: {
           path: 'author',
           select: 'username',

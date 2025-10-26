@@ -10,7 +10,7 @@ export const metadata = {
   description: 'Login or Sign up to ZaloUTE',
 };
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -65,16 +65,6 @@ export default function SignupPage() {
             <p className="text-sm text-gray-500 mb-4">
               We've sent an OTP to <strong>{emailForOtp}</strong>
             </p>
-            {process.env.NODE_ENV === 'development' && otpCode && (
-              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
-                <p className="text-xs text-yellow-800 mb-1">
-                  Dev Mode - Your OTP:
-                </p>
-                <p className="text-lg font-mono font-bold text-yellow-900">
-                  {otpCode}
-                </p>
-              </div>
-            )}
             <p className="text-sm text-gray-500 mb-6">
               Please check your email to verify your account.
             </p>

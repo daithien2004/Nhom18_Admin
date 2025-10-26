@@ -10,6 +10,7 @@ export interface Comment {
   postId: {
     id: string;
     content: string;
+    caption: string;
     author: Author;
   };
   isHidden: boolean;
@@ -32,7 +33,7 @@ export interface ListCommentsQuery {
   current?: number;
   pageSize?: number;
   search?: string;
-  status?: "all" | "visible" | "hidden" | "deleted";
+  status?: 'all' | 'visible' | 'hidden' | 'deleted';
   author?: Author;
   startDate?: string;
   endDate?: string;
