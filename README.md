@@ -27,11 +27,11 @@
 
 ## 📂 Cấu trúc thư mục
 
+```
 /
-├─ backend/ ← mã nguồn backend quản trị
-└─ frontend/ ← mã nguồn giao diện quản trị
-
----
+├─ backend/      ← mã nguồn phía server
+└─ frontend/     ← mã nguồn phía client
+```
 
 ## 🧑‍💻 Hướng dẫn chạy dự án (Local)
 
@@ -40,40 +40,47 @@
 ```bash
 git clone https://github.com/daithien2004/Nhom18_Admin.git
 cd Nhom18_Admin
-2. Cài đặt và chạy backend
-bash
-Sao chép mã
+```
+
+### 2. Cài đặt và chạy backend
+
+```bash
 cd backend
 npm install
 # cấu hình file env (.env) với thông số kết nối PORT, MONGO_URI, EMAIL_USER, EMAIL_PASS, JWT_ACCESS_SECRET, ACCESS_TOKEN_EXPIRES_IN, FRONTEND_URL
 npm run start:dev
+```
 
-3. Cài đặt và chạy frontend
-bash
-Sao chép mã
+### 3. Cài đặt và chạy frontend
+
+```bash
 cd ../frontend
 npm install
-npm run dev
 # cấu hình file env (.env) với thông số kết nối NEST_API_URL, NEXTAUTH_SECRET
-
-✅ Hướng nâng cấp & mở rộng
-Thêm xác thực 2 lớp (2FA) cho tài khoản quản trị
-
-Ghi nhật ký (audit log) – lưu lịch sử hoạt động admin
-
-Hệ thống phân quyền chi tiết (RBAC) – nhiều mức quyền hơn
-
-Dashboard realtime – biểu đồ cập nhật ngay khi người dùng tương tác
-
-Triển khai production: Docker Compose, SSL, domain riêng, auto-backup database
-
-Viết kiểm thử tự động (UnitTest + IntegrationTest) cho backend & frontend
-
-👥 Nhóm phát triển
-[Quảng Đại Thiện] – vai trò …
-
-[Nguyễn Tuấn Thành] – vai trò …
-
-[Huỳnh Thái Toàn] – vai trò …
-
+npm run dev
 ```
+
+### 4. Truy cập ứng dụng
+
+Mở trình duyệt và truy cập `http://localhost:3000` (ví dụ)
+
+---
+
+## ✅ Hướng tiếp theo / nâng cấp
+
+- Thêm xác thực 2 lớp (2FA) cho tài khoản quản trị
+- Ghi nhật ký (audit log) – lưu lịch sử hoạt động admin
+- Hệ thống phân quyền chi tiết (RBAC) – nhiều mức quyền hơn
+- Dashboard realtime – biểu đồ cập nhật ngay khi người dùng tương tác
+- Triển khai production: Docker Compose, SSL, domain riêng, auto-backup database
+- Viết kiểm thử tự động (UnitTest + IntegrationTest) cho backend & frontend
+
+---
+
+## 👥 Nhóm phát triển
+
+- Thành viên: [Quảng Đại Thiện]
+- Thành viên: [Nguyễn Tuấn Thành]
+- Thành viên: [Huỳnh Thái Toàn]
+
+---
